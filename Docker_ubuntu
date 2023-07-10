@@ -11,7 +11,7 @@ RUN mkdir /var/run/sshd
 # Permit root login via SSH (not recommended for production)
 RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
 
-# Set the root password (change "your_password" to your desired password)
+# Set the root password
 RUN echo 'root:test' | chpasswd
 
 # Enable SSH service
