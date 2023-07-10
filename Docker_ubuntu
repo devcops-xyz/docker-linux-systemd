@@ -1,0 +1,22 @@
+FROM ubuntu:latest
+
+# Install systemd and OpenSSH server
+RUN apt-get update && \
+    apt-get install -y systemd openssh-server && \
+    apt-get clean
+
+# Configure SSH server
+RUN mkdir /var/run/sshd
+
+# Permit root login via SSH (not recommended for production)
+RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+
+# Set the root password (change "your_password" to your desired password)
+RUN echo 'root:test' | chpasswd
+
+# Enable SSH service
+RUN systemctl enable ssh
+
+# Replace the systemd init process
+STOPSIGNAL SIGRTMIN+3
+CMD ["/sbin/init"]
